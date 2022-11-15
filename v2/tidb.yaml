@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: basic-tidb-0
+  labels:
+    app: tidb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tidb
+  template:
+    metadata:
+      labels:
+        app: tidb
+    spec:
+      containers:
+      - name: basic-tidb-0
+        image: pingcap/tidb:latest
+        ports:
+          - containerPort: 20261
+        args:
+          - "--pd=http://pd-service:2380"
+          - "--addr=0.0.0.0:20261"
+          - "--advertise-addr=basic-tidb-peer.tidb-cluster.svc.cluster.local:20261"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tidb-service
+spec:
+  selector:
+    app: tidb
+  type: LoadBalancer  
+  ports:
+    - protocol: TCP
+      port: 20261
+      targetPort: 20261
+      nodePort: 30011

@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: basic-pd-0
+  labels:
+    app: pd
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pd
+  template:
+    metadata:
+      labels:
+        app: pd
+    spec:
+      containers:
+      - name: pd
+        image: pingcap/pd:latest
+        ports:
+        - containerPort: 2380
+        # args:
+        #   - "--data-dir=/var/lib/pd"
+        #   - "--client-urls=http://0.0.0.0:2380"
+        #   - "--advertise-client-urls=http://basic-pd.tidb-cluster.svc.cluster.local:2380"
+
+#pd svc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pd-service
+spec:
+  selector:
+    app: pd
+  ports:
+    - protocol: TCP
+      port: 2380
+      targetPort: 2380
