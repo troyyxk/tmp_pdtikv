@@ -5,7 +5,6 @@ metadata:
   name: basic-tikv-0
   labels:
     component: tikv
-  namespace: tidb-cluster
 spec:
   containers:
   - name: basic-tikv-0
@@ -13,7 +12,7 @@ spec:
     ports:
       - containerPort: 20160
     args:
-      - "--pd=http://basic-pd:2379"
+      - "--pd=http://172.17.0.6:2379"
       - "--addr=0.0.0.0:20160"
       - "--advertise-addr=basic-tikv-peer.tidb-cluster.svc.cluster.local:20160"
 
@@ -26,7 +25,6 @@ metadata:
   labels:
     component: tikv
   name: basic-tikv-peer
-  namespace: tidb-cluster
 spec:
   clusterIP: None
   clusterIPs:

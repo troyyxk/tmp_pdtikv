@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: pd
+  name: pd
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pd
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: pd
+    spec:
+      containers:
+      - image: pingcap/pd
+        name: pd
+        ports:
+        - containerPort: 2379
+        - containerPort: 2380
+        resources: {}
+status: {}
