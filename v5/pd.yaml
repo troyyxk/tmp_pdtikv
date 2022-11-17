@@ -20,8 +20,18 @@ spec:
       containers:
       - image: pingcap/pd
         name: pd
+        args:
+        - --client-urls=http://0.0.0.0:2379
+        - --advertise-client-urls=http://$(MY_POD_IP):2379
+        - --peer-urls=http://0.0.0.0:2380
+        - --advertise-peer-urls=http://$(MY_POD_IP):2380
         ports:
         - containerPort: 2379
         - containerPort: 2380
         resources: {}
+        env:
+        - name: MY_POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
 status: {}
